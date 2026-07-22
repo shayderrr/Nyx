@@ -3,6 +3,7 @@ import type { ModelV2Info } from "@opencode-ai/sdk/v2/types"
 import { Effect, Stream } from "effect"
 import { EventV2 } from "../event"
 import { ModelsDev } from "../models-dev"
+import { ModelV2 } from "../model"
 import { ProviderV2 } from "../provider"
 
 function released(date: string) {
@@ -173,6 +174,7 @@ export const ModelsDevPlugin = define({
             }
           }
         }
+        catalog.model.default.set(ProviderV2.ID.make("anthropic"), ModelV2.ID.make("anthropic/claude-opus-4-8"))
       }),
     )
     yield* events.subscribe(ModelsDev.Event.Refreshed).pipe(

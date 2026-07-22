@@ -1,6 +1,6 @@
 const logo = {
-  left: ["                   ", "█▀▀█ █▀▀█ █▀▀█ █▀▀▄", "█__█ █__█ █^^^ █__█", "▀▀▀▀ █▀▀▀ ▀▀▀▀ ▀~~▀"],
-  right: ["             ▄     ", "█▀▀▀ █▀▀█ █▀▀█ █▀▀█", "█___ █__█ █__█ █^^^", "▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀"],
+  left: ["         ", "█▀▀█ █▀▀█", "█__█  ▀█▀", "▀▀▀▀ ▀▀▀▀"],
+  right: ["    ", "█▀▀█", " ▀█▀", "▀  ▀"],
 }
 
 const reset = "\x1b[0m"
@@ -29,10 +29,9 @@ function wordmark(pad = "") {
 export function sessionEpilogue(input: { title: string; sessionID?: string }) {
   const weak = (text: string) => `${dim}${text.padEnd(10, " ")}${reset}`
   return [
-    ...wordmark("  "),
     "",
     `  ${weak("Session")}${bold}${input.title}${reset}`,
-    `  ${weak("Continue")}${bold}opencode -s ${input.sessionID}${reset}`,
+    `  ${weak("Continue")}${bold}nyx -s ${input.sessionID}${reset}`,
     "",
   ].join("\n")
 }

@@ -1442,12 +1442,22 @@ const layer = Layer.effect(
               if (model.id && model.id !== modelID) return modelID
               return existingModel?.name ?? modelID
             })
+            const apiUrl = (() => {
+              if (model.provider?.api) return model.provider.api
+              if (provider?.api) {
+                const api: any = provider.api
+                if (api.url) return api.url
+              }
+              if (existingModel?.api.url) return existingModel.api.url
+              if (modelsDev[providerID]?.api) return modelsDev[providerID]!.api
+              return ""
+            })()
             const parsedModel: Model = {
               id: ModelV2.ID.make(modelID),
               api: {
                 id: apiID,
                 npm: apiNpm,
-                url: model.provider?.api ?? provider?.api ?? existingModel?.api.url ?? modelsDev[providerID]?.api ?? "",
+                url: apiUrl,
               },
               status: model.status ?? existingModel?.status ?? "active",
               name,
@@ -1519,6 +1529,13 @@ const layer = Layer.effect(
         for (const [id, provider] of Object.entries(database)) {
           const providerID = ProviderV2.ID.make(id)
           if (disabled.has(providerID)) continue
+          // If env array is empty, provider needs no API key (e.g. proxy providers)
+          if (provider.env.length === 0) {
+            mergeProvider(providerID, {
+              source: "config",
+            })
+            continue
+          }
           const apiKey = provider.env.map((item) => envs[item]).find(Boolean)
           if (!apiKey) continue
           mergeProvider(providerID, {

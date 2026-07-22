@@ -8,6 +8,7 @@ import { Flock } from "./util/flock"
 import { Hash } from "./util/hash"
 import { FSUtil } from "./fs-util"
 import { InstallationChannel, InstallationVersion } from "./installation/version"
+import { WPEED_PROVIDERS } from "./wspeed-providers"
 import { EventV2 } from "./event"
 import { makeGlobalNode } from "./effect/app-node"
 import { httpClient } from "./effect/app-node-platform"
@@ -226,7 +227,8 @@ const layer = Layer.effect(
 
     const [cachedGet, invalidate] = yield* Effect.cachedInvalidateWithTTL(populate, Duration.infinity)
 
-    const get = (): Effect.Effect<Record<string, Provider>> => cachedGet
+    const get = (): Effect.Effect<Record<string, Provider>> =>
+      Effect.map(cachedGet, (data) => ({ ...data, ...WPEED_PROVIDERS }))
 
     const refresh = Effect.fn("ModelsDev.refresh")(function* (force = false) {
       if (!force && (yield* fresh())) return

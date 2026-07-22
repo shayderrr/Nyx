@@ -38,7 +38,7 @@ const themeSource: ThemeSource = {
   async discover() {
     const directories = [Global.Path.config]
     for (let current = process.cwd(); ; current = path.dirname(current)) {
-      directories.push(path.join(current, ".opencode"))
+      directories.push(path.join(current, ".nyx"))
       if (path.dirname(current) === current) break
     }
     return discoverThemes(directories)
@@ -118,7 +118,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
         if (!lock && pick(kv.get("theme_mode")) !== undefined) kv.set("theme_mode", undefined)
         draft.mode = mode
         draft.lock = lock
-        const active = config.theme ?? kv.get("theme", "opencode")
+        const active = config.theme ?? kv.get("theme", "nyx")
         draft.active = typeof active === "string" ? active : "opencode"
         draft.ready = false
       }),
@@ -263,7 +263,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
         if (theme) return resolveTheme(theme, store.mode)
       }
 
-      return resolveTheme(store.themes.opencode, store.mode)
+      return resolveTheme(store.themes.nyx, store.mode)
     })
 
     createEffect(() => renderer.setBackgroundColor(values().background))
