@@ -1,0 +1,15 @@
+.turbo/
+script/
+test/
+specs/
+migration/
+.git/
+.gitignore
+.bunfig.toml
+Dockerfile
+AGENTS.md
+tsconfig.json
+parsers-config.ts
+sst-env.d.ts
+bun.lock
+bin/opencode
